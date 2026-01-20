@@ -1,9 +1,18 @@
 import { useState, useEffect } from 'react'
 import { db } from './firebase'; 
 import { 
-  collection, addDoc, onSnapshot, deleteDoc, doc, query, orderBy, updateDoc 
+  collection, 
+  addDoc, 
+  onSnapshot, 
+  deleteDoc, 
+  doc, 
+  query, 
+  orderBy, 
+  updateDoc 
 } from 'firebase/firestore';
 import './App.css'
+import { TaskForm } from './assets/components/TaskForm';
+import { TaskList } from './assets/components/TaskList';
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -101,63 +110,34 @@ function App() {
   URL.revokeObjectURL(url);
 };
 
-  return (
-  <div className="App">
-    {/* 1. Encabezado con Título y Botón de Descarga */}
-    <div className="header-actions">
-      <h1>Mis Tareas</h1>
-      {tasks.length > 0 && (
-        <button className="download-btn" onClick={downloadList}>
-           Descargar Lista
-        </button>
-      )}
+return (
+    <div className="App">
+      <div className="header-actions">
+        <h1>Mis Tareas</h1>
+        {tasks.length > 0 && (
+          <button className="download-btn" onClick={downloadList}> Descargar Lista</button>
+        )}
+      </div>
+
+      <TaskForm 
+        isEditing={isEditing}
+        updateTask={updateTask}
+        addTask={addTask}
+        currentTask={currentTask}
+        setCurrentTask={setCurrentTask}
+        newTaskText={newTaskText}
+        setNewTaskText={setNewTaskText}
+        setIsEditing={setIsEditing}
+      />
+
+      <TaskList 
+        tasks={tasks}
+        toggleComplete={toggleComplete}
+        startEdit={startEdit}
+        deleteTask={deleteTask}
+      />
     </div>
-
-    {/* 2. Formulario (Crear o Editar) */}
-    {isEditing ? (
-      <form onSubmit={updateTask} className="edit-form">
-        <input 
-          type="text"
-          value={currentTask.text}
-          onChange={(e) => setCurrentTask({...currentTask, text: e.target.value})}
-        />
-        <button type="submit" className="save-btn">Actualizar</button>
-        <button type="button" onClick={() => setIsEditing(false)}>Cancelar</button>
-      </form>
-    ) : (
-      <form onSubmit={addTask}>
-        <input 
-          type="text"
-          value={newTaskText}
-          onChange={(e) => setNewTaskText(e.target.value)}
-          placeholder="Nueva tarea..."
-        />
-        <button type="submit">Agregar</button>
-      </form>
-    )}
-
-    {/* 3. Listado de Tareas */}
-    <ul>
-      {tasks.map((task) => (
-        <li key={task.id} className={task.completed ? "task-completed" : ""}>
-          <div className="task-content">
-            <input 
-              type="checkbox" 
-              checked={task.completed} 
-              onChange={() => toggleComplete(task)} 
-            />
-            <span className="task-text">{task.text}</span>
-          </div>
-          
-          <div className="button-group">
-            <button className="edit-btn" onClick={() => startEdit(task)}>Editar</button>
-            <button className="delete-btn" onClick={() => deleteTask(task.id)}>Eliminar</button>
-          </div>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
+  );
 }
 
 export default App;
