@@ -135,3 +135,20 @@ input[type="checkbox"] {
   cursor: pointer;
   accent-color: #646cff; /* Color que combina con tu botón */
 }
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.download-btn {
+  background-color: #2ecc71; /* Verde esmeralda */
+  font-size: 0.8rem;
+  padding: 8px 15px;
+}
+
+.download-btn:hover {
+  background-color: #27ae60;
+}

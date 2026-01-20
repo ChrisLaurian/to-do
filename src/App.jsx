@@ -78,54 +78,86 @@ function App() {
     }
   };
 
+  // Descargar tareas
+  const downloadList = () => {
+  // 1. Formateamos las tareas en un string legible
+  const listText = tasks.map(t => 
+    `${t.completed ? '[Hecha]' : '[Pendiente]'} - ${t.text}`
+  ).join('\n');
+
+  // 2. Creamos un "Blob" (un objeto que representa datos de archivo)
+  const blob = new Blob([listText], { type: 'text/plain' });
+  
+  // 3. Creamos un link temporal en el documento
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  
+  // 4. Configuramos el nombre del archivo y disparamos la descarga
+  link.download = 'mi-lista-de-tareas.txt';
+  link.href = url;
+  link.click();
+  
+  // 5. Limpiamos la memoria
+  URL.revokeObjectURL(url);
+};
+
   return (
-    <div className="App">
-      <h1>Task Manager Cloud</h1>
-
-      {/* Renderizado condicional del formulario: Editar o Crear */}
-      {isEditing ? (
-        <form onSubmit={updateTask} className="edit-form">
-          <input 
-            type="text"
-            value={currentTask.text}
-            onChange={(e) => setCurrentTask({...currentTask, text: e.target.value})}
-          />
-          <button type="submit" className="save-btn">Actualizar</button>
-          <button onClick={() => setIsEditing(false)}>Cancelar</button>
-        </form>
-      ) : (
-        <form onSubmit={addTask}>
-          <input 
-            type="text"
-            value={newTaskText}
-            onChange={(e) => setNewTaskText(e.target.value)}
-            placeholder="Nueva tarea..."
-          />
-          <button type="submit">Agregar</button>
-        </form>
+  <div className="App">
+    {/* 1. Encabezado con Título y Botón de Descarga */}
+    <div className="header-actions">
+      <h1>Mis Tareas</h1>
+      {tasks.length > 0 && (
+        <button className="download-btn" onClick={downloadList}>
+           Descargar Lista
+        </button>
       )}
-
-<ul>
-  {tasks.map((task) => (
-    <li key={task.id} className={task.completed ? "task-completed" : ""}>
-      <div className="task-content">
-        <input 
-          type="checkbox" 
-          checked={task.completed} 
-          onChange={() => toggleComplete(task)} 
-        />
-        <span className="task-text">{task.text}</span>
-      </div>
-      
-      <div>
-        <button className="edit-btn" onClick={() => startEdit(task)}>Editar</button>
-        <button className="delete-btn" onClick={() => deleteTask(task.id)}>Eliminar</button>
-      </div>
-    </li>
-  ))}
-</ul>
     </div>
-  );
+
+    {/* 2. Formulario (Crear o Editar) */}
+    {isEditing ? (
+      <form onSubmit={updateTask} className="edit-form">
+        <input 
+          type="text"
+          value={currentTask.text}
+          onChange={(e) => setCurrentTask({...currentTask, text: e.target.value})}
+        />
+        <button type="submit" className="save-btn">Actualizar</button>
+        <button type="button" onClick={() => setIsEditing(false)}>Cancelar</button>
+      </form>
+    ) : (
+      <form onSubmit={addTask}>
+        <input 
+          type="text"
+          value={newTaskText}
+          onChange={(e) => setNewTaskText(e.target.value)}
+          placeholder="Nueva tarea..."
+        />
+        <button type="submit">Agregar</button>
+      </form>
+    )}
+
+    {/* 3. Listado de Tareas */}
+    <ul>
+      {tasks.map((task) => (
+        <li key={task.id} className={task.completed ? "task-completed" : ""}>
+          <div className="task-content">
+            <input 
+              type="checkbox" 
+              checked={task.completed} 
+              onChange={() => toggleComplete(task)} 
+            />
+            <span className="task-text">{task.text}</span>
+          </div>
+          
+          <div className="button-group">
+            <button className="edit-btn" onClick={() => startEdit(task)}>Editar</button>
+            <button className="delete-btn" onClick={() => deleteTask(task.id)}>Eliminar</button>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
 }
 
 export default App;
