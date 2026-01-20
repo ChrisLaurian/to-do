@@ -66,6 +66,18 @@ function App() {
     setCurrentTask({ id: task.id, text: task.text });
   };
 
+  // Función para marcar tarea como completada
+  const toggleComplete = async (task) => {
+    try {
+      const taskRef = doc(db, "tareas", task.id);
+      await updateDoc(taskRef, {
+        completed: !task.completed
+      });
+    } catch (error) {
+      console.error("Error al actualizar el estado:", error);
+    }
+  };
+
   return (
     <div className="App">
       <h1>Task Manager Cloud</h1>
@@ -93,17 +105,25 @@ function App() {
         </form>
       )}
 
-      <ul>
-        {tasks.map((task) => (
-          <li key={task.id}>
-            <span>{task.text}</span>
-            <div>
-              <button className="edit-btn" onClick={() => startEdit(task)}>Editar</button>
-              <button className="delete-btn" onClick={() => deleteTask(task.id)}>Eliminar</button>
-            </div>
-          </li>
-        ))}
-      </ul>
+<ul>
+  {tasks.map((task) => (
+    <li key={task.id} className={task.completed ? "task-completed" : ""}>
+      <div className="task-content">
+        <input 
+          type="checkbox" 
+          checked={task.completed} 
+          onChange={() => toggleComplete(task)} 
+        />
+        <span className="task-text">{task.text}</span>
+      </div>
+      
+      <div>
+        <button className="edit-btn" onClick={() => startEdit(task)}>Editar</button>
+        <button className="delete-btn" onClick={() => deleteTask(task.id)}>Eliminar</button>
+      </div>
+    </li>
+  ))}
+</ul>
     </div>
   );
 }

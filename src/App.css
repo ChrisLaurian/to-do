@@ -113,3 +113,25 @@ li:hover {
   padding: 10px;
   border-radius: 8px;
 }
+
+/* Estilo para el contenido de la tarea (checkbox + texto) */
+.task-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* El estilo que "tacha" el texto */
+.task-completed .task-text {
+  text-decoration: line-through;
+  color: #888; /* Color más grisáceo para que parezca terminada */
+  opacity: 0.6;
+}
+
+/* Estilo del checkbox */
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #646cff; /* Color que combina con tu botón */
+}
