@@ -1,42 +1,115 @@
+/* src/App.css */
+:root {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #1a1a1a;
+  color: white;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  width: 100%;
+}
+
+.App {
+  max-width: 500px;
+  margin: 0 auto; /* Centra el bloque dentro del root */
   padding: 2rem;
-  text-align: center;
+  background: #242424;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Sombra para darle profundidad */
+  border: 1px solid #333;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+h1 {
+  color: #646cff;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 2rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background: #242424;
+  color: white;
+  font-size: 1rem;
 }
 
-.card {
-  padding: 2em;
+button {
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  background-color: #646cff;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
-.read-the-docs {
-  color: #888;
+button:hover {
+  background-color: #535bf2;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: #242424;
+  margin-bottom: 10px;
+  padding: 15px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #333;
+  transition: transform 0.2s;
+}
+
+li:hover {
+  transform: translateY(-2px);
+  border-color: #646cff;
+}
+
+.delete-btn {
+  background-color: #ff4747;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+.edit-btn {
+  background-color: #ffca28;
+  color: #000;
+  margin-right: 8px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+}
+
+.save-btn {
+  background-color: #4caf50;
+}
+
+.edit-form {
+  border: 2px solid #ffca28;
+  padding: 10px;
+  border-radius: 8px;
 }

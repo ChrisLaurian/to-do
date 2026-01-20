@@ -1,35 +1,111 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
+import { db } from './firebase'; 
+import { 
+  collection, addDoc, onSnapshot, deleteDoc, doc, query, orderBy, updateDoc 
+} from 'firebase/firestore';
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [tasks, setTasks] = useState([]);
+  const [newTaskText, setNewTaskText] = useState("");
+  // Estados para la edición
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentTask, setCurrentTask] = useState({ id: null, text: "" });
+
+  useEffect(() => {
+    const q = query(collection(db, "tareas"), orderBy("createdAt", "desc"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const docs = [];
+      snapshot.forEach((doc) => {
+        docs.push({ ...doc.data(), id: doc.id });
+      });
+      setTasks(docs);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const addTask = async (e) => {
+    e.preventDefault();
+    if (!newTaskText.trim()) return;
+    try {
+      await addDoc(collection(db, "tareas"), {
+        text: newTaskText.trim(),
+        completed: false,
+        createdAt: new Date()
+      });
+      setNewTaskText("");
+    } catch (error) { console.error(error); }
+  };
+
+  // --- FUNCIÓN PARA EDITAR ---
+  const updateTask = async (e) => {
+    e.preventDefault();
+    if (!currentTask.text.trim()) return;
+
+    try {
+      const taskRef = doc(db, "tareas", currentTask.id);
+      await updateDoc(taskRef, {
+        text: currentTask.text
+      });
+      setIsEditing(false); // Salir del modo edición
+      setCurrentTask({ id: null, text: "" });
+    } catch (error) {
+      console.error("Error al actualizar:", error);
+    }
+  };
+
+  const deleteTask = async (id) => {
+    try {
+      await deleteDoc(doc(db, "tareas", id));
+    } catch (error) { console.error(error); }
+  };
+
+  // Función para activar el modo edición
+  const startEdit = (task) => {
+    setIsEditing(true);
+    setCurrentTask({ id: task.id, text: task.text });
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      <h1>Task Manager Cloud</h1>
+
+      {/* Renderizado condicional del formulario: Editar o Crear */}
+      {isEditing ? (
+        <form onSubmit={updateTask} className="edit-form">
+          <input 
+            type="text"
+            value={currentTask.text}
+            onChange={(e) => setCurrentTask({...currentTask, text: e.target.value})}
+          />
+          <button type="submit" className="save-btn">Actualizar</button>
+          <button onClick={() => setIsEditing(false)}>Cancelar</button>
+        </form>
+      ) : (
+        <form onSubmit={addTask}>
+          <input 
+            type="text"
+            value={newTaskText}
+            onChange={(e) => setNewTaskText(e.target.value)}
+            placeholder="Nueva tarea..."
+          />
+          <button type="submit">Agregar</button>
+        </form>
+      )}
+
+      <ul>
+        {tasks.map((task) => (
+          <li key={task.id}>
+            <span>{task.text}</span>
+            <div>
+              <button className="edit-btn" onClick={() => startEdit(task)}>Editar</button>
+              <button className="delete-btn" onClick={() => deleteTask(task.id)}>Eliminar</button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
-export default App
+export default App;

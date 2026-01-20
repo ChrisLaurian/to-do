@@ -1,16 +1,21 @@
-# React + Vite
+# 🚀 Task Manager Cloud - React + Firebase
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es un proyecto de demostración técnica que consiste en un Gestor de Tareas (CRUD) con persistencia de datos en tiempo real utilizando **Firebase Firestore**.
 
-Currently, two official plugins are available:
+## 🛠️ Tecnologías utilizadas
+* **React 19** - Librería de UI.
+* **Vite** - Herramienta de construcción ultra rápida.
+* **Firebase Firestore** - Base de datos NoSQL en la nube.
+* **CSS3** - Diseño moderno con Flexbox y variables.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Características
+- **Create**: Agregar tareas de forma instantánea.
+- **Read**: Sincronización en tiempo real con la nube (onSnapshot).
+- **Update**: Edición de tareas existentes con cambio de estado local.
+- **Delete**: Eliminación de registros en la base de datos.
+- **Diseño Responsivo**: Centrado absoluto y modo oscuro.
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📦 Instalación
+1. Clonar el repositorio:
+   ```bash
+   git clone https://github.com/ChrisLaurian/to-do
