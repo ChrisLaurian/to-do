@@ -6,9 +6,8 @@ export function TaskForm({
     setCurrentTask, 
     newTaskText, 
     setNewTaskText, 
-    setIsEditing
- }) {
-    
+    setIsEditing }) {
+
   return (
     <div className="form-container">
       {isEditing ? (

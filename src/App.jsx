@@ -63,6 +63,7 @@ function App() {
     }
   };
 
+  // Funcion para eliminar tarea
   const deleteTask = async (id) => {
     try {
       await deleteDoc(doc(db, "tareas", id));
@@ -89,24 +90,24 @@ function App() {
 
   // Descargar tareas
   const downloadList = () => {
-  // 1. Formateamos las tareas en un string legible
+  // Formateamos las tareas en un string legible
   const listText = tasks.map(t => 
     `${t.completed ? '[Hecha]' : '[Pendiente]'} - ${t.text}`
   ).join('\n');
 
-  // 2. Creamos un "Blob" (un objeto que representa datos de archivo)
+  // Creamos un "Blob" (un objeto que representa datos de archivo)
   const blob = new Blob([listText], { type: 'text/plain' });
   
-  // 3. Creamos un link temporal en el documento
+  // Creamos un link temporal en el documento
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   
-  // 4. Configuramos el nombre del archivo y disparamos la descarga
+  // Configuramos el nombre del archivo y disparamos la descarga
   link.download = 'mi-lista-de-tareas.txt';
   link.href = url;
   link.click();
   
-  // 5. Limpiamos la memoria
+  // Limpiamos la memoria
   URL.revokeObjectURL(url);
 };
 
